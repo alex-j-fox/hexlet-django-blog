@@ -17,8 +17,10 @@
     <h2>{{ title }}</h2>
     {% for article in articles %}
         <h3>{{ article.title }}</h3>
-        <a href="{% url 'articles_detail' article.id %}"
-           style="text-decoration: none">Читать</a>
+        <small><a href="{% url 'articles_detail' article.id %}"
+                  style="text-decoration: none">Читать</a></small>
+        <small><a href="{% url 'articles_update' article.id %}"
+           style="text-decoration: none">Редактировать</a></small>
         <div>{{ article.text|slice:200 }}</div>
 
     {% endfor %}

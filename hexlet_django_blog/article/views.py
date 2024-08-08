@@ -66,3 +66,24 @@ class ArticleCreateView(View):
         else:
             messages.add_message(request, messages.ERROR, 'Статья не создана')
             return render(request, self.template_name, {'form': form})
+
+
+class ArticleUpdateView(View):
+    template_name = 'articles/update.html'
+
+    def get(self, request, *args, **kwargs):
+        article_id = kwargs.get('article_id')
+        article = Article.objects.get(id=article_id)
+        form = ArticleForm(instance=article)
+        return render(request, self.template_name,
+                      {'form': form, 'article': article})
+
+    def post(self, request, *args, **kwargs):
+        article_id = kwargs.get('article_id')
+        article = Article.objects.get(id=article_id)
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('articles_index'))
+        else:
+            return render(request, self.template_name, {'form': form})

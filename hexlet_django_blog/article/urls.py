@@ -9,6 +9,8 @@ urlpatterns = [
     path('<str:tags>/<int:article_id>', views.IndexView.as_view(),
          name='article'),
     # path('<str:tags>/<int:article_id>', views.index),
+    path('<int:article_id>/edit/', views.ArticleUpdateView.as_view(),
+         name='articles_update'),
     path('<int:article_id>', views.ArticleView.as_view(),
          name='articles_detail'),
     path('create', views.ArticleCreateView.as_view(), name='articles_create'),

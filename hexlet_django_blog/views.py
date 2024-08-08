@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views.generic import View
+from django.shortcuts import render
+# from django.urls import reverse
+# from django.views.generic import View
 from django.views.generic.base import TemplateView
 
 
@@ -26,10 +26,10 @@ class IndexView(TemplateView):
 
 # class Error404View(View):
 #     template_name = '404.html'
-# 
+
 #     def get(self):
 #         return render(self.request, '404.html')
-#     
-    
+
+
 def about(request):
     return render(request, 'about.html')

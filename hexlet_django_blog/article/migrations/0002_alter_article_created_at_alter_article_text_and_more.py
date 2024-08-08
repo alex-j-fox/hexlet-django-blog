@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('article', '0001_initial'),
     ]
@@ -13,7 +12,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='created_at',
-            field=models.DateTimeField(auto_now_add=True, verbose_name='Время создания'),
+            field=models.DateTimeField(auto_now_add=True,
+                                       verbose_name='Время создания'),
         ),
         migrations.AlterField(
             model_name='article',
@@ -28,6 +28,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='updated_at',
-            field=models.DateTimeField(auto_now=True, verbose_name='Обновлено'),
+            field=models.DateTimeField(auto_now=True,
+                                       verbose_name='Обновлено'),
         ),
     ]

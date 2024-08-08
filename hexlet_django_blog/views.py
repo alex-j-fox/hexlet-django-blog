@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views.generic import View
 from django.views.generic.base import TemplateView
 
 
@@ -6,6 +8,7 @@ from django.views.generic.base import TemplateView
 #     return render(request, 'index.html', context={
 #         'who': 'World',
 #     })
+
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -15,6 +18,18 @@ class IndexView(TemplateView):
         context['who'] = 'World'
         return context
 
+    def get(self, request, **kwargs):
+        return render(request, 'index.html', context={'who': 'World'})
+        # return redirect(
+        #     reverse('article', kwargs={'tags': 'Python', 'article_id': 42}))
 
+
+# class Error404View(View):
+#     template_name = '404.html'
+# 
+#     def get(self):
+#         return render(self.request, '404.html')
+#     
+    
 def about(request):
     return render(request, 'about.html')

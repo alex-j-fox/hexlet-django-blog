@@ -19,6 +19,15 @@
     {% include 'includes/nav.html' %}
 </header>
 
+{% if messages %}
+    {% for message in messages %}
+        <div{% if message.tags %}
+        class="alert alert-{{ message.tags }}" role="alert"{% endif %}>
+        {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 <main class="flex-grow-1">
     <div class="container-lg mt-3">
         <div class="row">

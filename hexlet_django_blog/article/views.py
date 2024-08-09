@@ -21,7 +21,6 @@ def index(request, tags: str = None, article_id: int = None):
 class IndexView(View):
     template_name = 'articles/index.html'
 
-    # def get(self, request, tags: str = '', article_id: int = None):
     def get(self, request, *args, **kwargs):
         current_article = title
         articles = Article.objects.all()[0:15]
@@ -46,25 +45,26 @@ class ArticleView(View):
 class ArticleCreateView(View):
     template_name = 'articles/create.html'
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    # self.fields['cat'].empty_label = 'Категория не выбрана'
-
     def get(self, request, *args, **kwargs):
         form = ArticleForm()
-        mess = messages.get_messages(request)
         return render(request, self.template_name,
-                      {'form': form, 'messages': mess})
+                      {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = ArticleForm(request.POST)
         if form.is_valid():
+            obj = form.save(commit=False)
+            if Article.objects.filter(title=obj.title).exists():
+                messages.error(request,
+                               'Статья с таким названием уже существует.',
+                               extra_tags='alert alert-danger')
+                return render(request, self.template_name, {'form': form})
             form.save()
-            messages.add_message(request, messages.SUCCESS,
-                                 'Статья успешно создана')
+            messages.success(request, 'Статья успешно создана')
             return redirect(reverse('articles_index'))
         else:
-            messages.add_message(request, messages.ERROR, 'Статья не создана')
+            messages.error(request, 'Статья не создана.',
+                           extra_tags='alert alert-danger')
             return render(request, self.template_name, {'form': form})
 
 
@@ -83,7 +83,20 @@ class ArticleUpdateView(View):
         article = Article.objects.get(id=article_id)
         form = ArticleForm(request.POST, instance=article)
         if form.is_valid():
+            obj = form.save(commit=False)
+            if Article.objects.filter(title=obj.title).exclude(
+                    pk=article_id).exists():
+                messages.error(request,
+                               'Статья с таким названием уже существует.',
+                               extra_tags='alert alert-danger')
+                return render(request, self.template_name,
+                              {'form': form, 'article': article})
             form.save()
+            messages.success(request, 'Статья успешно обновлена')
             return redirect(reverse('articles_index'))
         else:
+            messages.error(request,
+                           'Не удалось обновить статью.'
+                           ' Проверьте правильность заполнения полей',
+                           extra_tags='alert alert-danger')
             return render(request, self.template_name, {'form': form})

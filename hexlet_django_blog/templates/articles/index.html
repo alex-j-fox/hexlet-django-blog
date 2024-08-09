@@ -2,27 +2,19 @@
 
 {% block title %}Эксперименты с Django{% endblock %}
 
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %}
-                class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
 {% block main %}
     <a href="{% url 'articles_create' %}" style="text-decoration: none">Создать
         новую статью</a>
-    <h2>{{ title }}</h2>
+    <h2 class="my-2">{{ title }}</h2>
     {% for article in articles %}
-        <h3>{{ article.title }}</h3>
+        <h3 class="mt-4">{{ article.title }}</h3>
+        <div>{{ article.text|slice:200 }}</div>
         <small><a href="{% url 'articles_detail' article.id %}"
                   style="text-decoration: none">Читать</a></small>
         <small><a href="{% url 'articles_update' article.id %}"
            style="text-decoration: none">Редактировать</a></small>
-        <div>{{ article.text|slice:200 }}</div>
-
+{#        <small><a href="{% url 'articles_delete' article.id %}"#}
+{#           style="text-decoration: none">Удалить</a></small>#}
     {% endfor %}
 
 {% endblock %}
